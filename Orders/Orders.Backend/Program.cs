@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Orders.Backend.Data;
+using Orders.Backend.Repositories.Implementations;
+using Orders.Backend.Repositories.Interfaces;
+using Orders.Backend.UnitsofWork.Implementations;
+using Orders.Backend.UnitsofWork.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=LocalConnection")); //Para configurar la conexión a la base de datos, se puede cambiar "LocalConnection" por el nombre de la cadena de conexión de appsettings.json
+
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
 var app = builder.Build();
 
